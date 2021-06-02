@@ -1,0 +1,7 @@
+6/2: Creating dictionaries/hashmaps for rows, columns, and grids
+    -before the backtracking process begins, the numpy array of the board will be transformed into 
+     dictionaries for constant time access (time spend at the start will be saved later)
+    -3 main dictionaries: rows, columns, grids
+        -each of the 3 is made up of (here, 9) dictionaries for each thing (row, column, grid)
+            -these individual dictionaries store the individual numbers present as key, frequencies as value
+    -***NOTE: go back later and take out hard-coded 3 to create general sudoku board***
