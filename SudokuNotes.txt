@@ -5,3 +5,8 @@
         -each of the 3 is made up of (here, 9) dictionaries for each thing (row, column, grid)
             -these individual dictionaries store the individual numbers present as key, frequencies as value
     -***NOTE: go back later and take out hard-coded 3 to create general sudoku board***
+
+6/3: Added function to check for breaks using the dictionaries; begin work on recursive solver
+    -Current issue: getting "TypeError: argument of type 'int' is not iterable" when trying to check if a given number
+     is in row, column, and grid dictionaries 
+        -not yet sure how to solve this
