@@ -43,7 +43,7 @@ def create_dicts(dim, board):
                     row[item] += 1
                 else:
                     row[item] = 1
-        row_map[str(a)] = row
+        row_map[a] = row
         # column dicts
         column = {}
         for item in board[:,a]:
@@ -52,7 +52,7 @@ def create_dicts(dim, board):
                     column[item] += 1
                 else:
                     column[item] = 1
-        col_map[str(a)] = column
+        col_map[a] = column
         # grid dicts
         grid = {}
         # using arithmetic to create bounds on grids
@@ -67,7 +67,7 @@ def create_dicts(dim, board):
                         grid[item] += 1
                     else:
                         grid[item] = 1
-        grid_map[str(a)] = grid
+        grid_map[a] = grid
 
     return
 
@@ -76,17 +76,18 @@ def create_dicts(dim, board):
 def check_if_break(num, i, j):
 
     # checking row dict
-    print(row_map[str(i)])
-    if str(num) in row_map[str(i)]:
+    print(row_map[i], num, i, j)
+    print(type(row_map[i]))
+    if num in row_map[i]:
         return True
 
     # checking column dict
-    if str(num) in col_map[str(j)]:
+    if num in col_map[j]:
         return True
 
     # checking grid dict
     grid = (j//3) + 3*(i//3)
-    if str(num) in grid_map[str(grid)]:
+    if num in grid_map[grid]:
         return True
 
     # no breaks
@@ -104,18 +105,24 @@ def solver(row, col):
     # if space contains predetermined number
     if board[row][col]:
         # call function for next square
-        pass
+        # if at end of the row
+        if (col+1) == dim:
+            solver(row+1, 0)
+        # continue in same row
+        else:
+            solver(row, col+1)
+            
     else:
         for num in range(1, dim+1):
             if not check_if_break(num, row, col):
                 board[row][col] = num
 
                 # adjusting dictionaries
-                row_map[str(row)] = 1
-                col_map[str(col)] = 1
+                row_map[row][num] = 1
+                col_map[col][num] = 1
 
                 grid = (col//3) + 3*(row//3)
-                grid_map[str(grid)] = 1
+                grid_map[grid][num] = 1
 
                 # if at end of the row
                 if (col+1) == dim:
@@ -129,9 +136,9 @@ def solver(row, col):
 
                 # return to blank
                 board[row][col] = 0
-                del row_map[str(row)]
-                del col_map[str(col)]
-                del grid_map[str(grid)]
+                del row_map[row][num]
+                del col_map[col][num]
+                del grid_map[grid][num]
 
 
     return False

@@ -1,3 +1,26 @@
+7/12: Some things to implement:
+    -going to need to make a separate function to create the sudoku board   
+        -the reason for this being i need a way to control if an input board or auto-solved board is created
+        -maybe have the solve function just make a whole new board itself & just have the solution ready to go apart from the function
+            -will need solution for checker, anyway
+    -a checker (a few ways to do this)
+        -just check as answers are inputted by showing red or blue depending if input is correct
+        -compare squares one at a time to see if they are right (have numpy array for user-inputted answers)
+            -if it doesn't match solution, have pop-up window that says the answers are not right
+    -EVENTUALLY: create a sudoku generator
+        -for the time being, though, will just find boards i know have solutions
+
+
+6/5: It works! TypeError was solved because I was changing an entire dictionary to '1', rather than just a value.
+    -I could probably make the dictionaries of dicts of rows, columns, and grids, into dictionaries of sets
+     because I do not use the frequency number for anything
+    -Next up, implement a GUI
+
+6/3: Added function to check for breaks using the dictionaries; begin work on recursive solver
+    -Current issue: getting "TypeError: argument of type 'int' is not iterable" when trying to check if a given number
+     is in row, column, and grid dictionaries 
+        -not yet sure how to solve this 
+
 6/2: Creating dictionaries/hashmaps for rows, columns, and grids
     -before the backtracking process begins, the numpy array of the board will be transformed into 
      dictionaries for constant time access (time spend at the start will be saved later)
@@ -5,8 +28,3 @@
         -each of the 3 is made up of (here, 9) dictionaries for each thing (row, column, grid)
             -these individual dictionaries store the individual numbers present as key, frequencies as value
     -***NOTE: go back later and take out hard-coded 3 to create general sudoku board***
-
-6/3: Added function to check for breaks using the dictionaries; begin work on recursive solver
-    -Current issue: getting "TypeError: argument of type 'int' is not iterable" when trying to check if a given number
-     is in row, column, and grid dictionaries 
-        -not yet sure how to solve this
