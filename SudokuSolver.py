@@ -151,7 +151,8 @@ def solver(row, col):
 create_dicts(dim, board)
 
 if solver(0,0):
-    for row in board:
+    solution = board
+    for row in solution:
         print(row)
 else:
     print("No solution found!")

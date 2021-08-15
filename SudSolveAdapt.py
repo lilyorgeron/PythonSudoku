@@ -58,8 +58,8 @@ def full_solver(board):
     def check_if_break(num, i, j):
 
         # checking row dict
-        print(row_map[i], num, i, j)
-        print(type(row_map[i]))
+        # print(row_map[i], num, i, j)
+        # print(type(row_map[i]))
         if num in row_map[i]:
             return True
 
@@ -123,20 +123,20 @@ def full_solver(board):
                     del grid_map[grid][num]
 
 
-            return False
+        return False
 
 
-        ##############################
+    ##############################
 
 
-        # setting up dictionaries for board
-        create_dicts(dim, board)
+    # setting up dictionaries for board
+    create_dicts(dim, board)
 
-        if solver(0,0):
-            return True
-        else:
-            print("No solution found!")
-            return False
+    if solver(0,0):
+        return True
+    else:
+        print("No solution found!")
+        return False
 
     """ 
     Solution:

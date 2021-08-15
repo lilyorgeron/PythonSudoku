@@ -59,7 +59,35 @@ def game(board, setup):
     one_ninth = overall_dim // 9
     one_18 = one_ninth // 2
     
-    
+
+    # storing entry boxes in a list
+    box = [[0 for i in range(9)] for j in range(9)]
+    create_layout(base,overall_dim,one_ninth,one_18,setup,box)
+
+    # setting up solution
+    intermediate = setup
+    SudSolveAdapt.full_solver(intermediate)
+    solution = intermediate
+    # print(solution)
+
+    check = partial(check_answer, solution, box)
+    solve = partial(give_solution, solution, box, base, one_ninth, one_18)
+
+    # creating buttons
+    global button_solve, button_check
+    button_solve = Button(board, text="SOLVE", padx=70, bg='#c7c8c8', command=solve)
+    button_check = Button(board, text="CHECK", padx=70, bg='#c7c8c8', command=check)
+    button_exit = Button(board, text="EXIT", padx=70, bg='#c7c8c8', command=board.quit)
+    button_exit.pack()
+    button_check.pack(side=LEFT)
+    button_solve.pack(side=RIGHT)
+
+    board.mainloop()
+
+    return
+
+def create_layout(base,overall_dim,one_ninth,one_18,setup,box):
+    # building the board
     # saving function to validate numbers entered in boxes
     vcmd = (base.register(validate), '%S', '%i')
 
@@ -75,7 +103,6 @@ def game(board, setup):
                 color = switch(color)
 
 
-
             # adding entry box to empty squares
             if setup[i//one_ninth][j//one_ninth] == 0:
                 answer = Entry(base, font=("Purisa",14,'bold'), justify="center", validate='key', validatecommand=vcmd)
@@ -85,20 +112,16 @@ def game(board, setup):
                 answer.config({"background":color})
 
                 answer.delete(0, END)
-        
+            
+                box[i//one_ninth][j//one_ninth] = answer
             # adding the default numbers into boxes
             else:
                 base.create_text(j+one_18, i+one_18, text=str(setup[i//one_ninth][j//one_ninth]), font=("Purisa",14,'bold'))
-
-    # creating buttons
-    # button_solve = Button(menu, text="SOLVE", padx=80, bg='#c7c8c8', font='sans 14 bold', command=solve)
-    # button_check = Button(menu, text="CHECK", padx=40, bg='#c7c8c8', command=check)
-    button_exit = Button(board, text="EXIT", padx=70, bg='#c7c8c8', command=board.quit)
-    button_exit.pack()
-
-    board.mainloop()
-
+                
     return
+
+
+
 
 def start(setup):
     # building the menu
@@ -146,16 +169,59 @@ def switch(color):
         color = "#f8ffeb"
     return color
 
-def auto_solve(board):
-    # solving board w/ sudoku solver
-    global solve_pressed
-    solve_pressed = True
+def auto_solve(setup,box):
+    # solving board w/ sudoku solver (making new solution board)
+    board = setup
     SudSolveAdapt.full_solver(board)
+    return board
+
+
+def check_answer(solution,box):
+    # gathering user input from entry boxes and comparing with solution
+
+    for i in range(9):
+        for j in range(9):
+            if box[i][j] != 0:
+                # print(box[i][j].get(),solution[i][j])
+                user_ans = box[i][j].get()
+                if user_ans != str(solution[i][j]):
+                    popup_wrong = Tk()
+                    popup_wrong.wm_title("Check")
+                    label = Label(popup_wrong, text="Incorrect. Keep trying!", font=("Purisa",14,'bold'))
+                    label.pack(side="top", fill="x", pady=10)
+                    B1 = Button(popup_wrong, text="Close", command = popup_wrong.destroy)
+                    B1.pack()
+                    popup_wrong.mainloop()
+                
+                    return False
+    
+    # board is completelt correct; pop-up saying so
+    popup_right = Tk()
+    popup_right.wm_title("Check")
+    label = Label(popup_right, text="You solved it!", font=("Purisa",14,'bold'))
+    label.pack(side="top", fill="x", pady=10)
+    B2 = Button(popup_right, text="Close", command = popup_right.destroy)
+    B2.pack()
+    popup_right.mainloop()
+
+    return True
+
+
+def give_solution(solution,box,base,one_ninth,one_18):
+    # looping through each box, checking for right answer
+    for i in range(9):
+        for j in range(9):
+            if box[i][j] != 0:
+                user_ans = box[i][j].get()
+                if user_ans != str(solution[i][j]):
+                    box[i][j].destroy()
+                    base.create_text(j*one_ninth+one_18, i*one_ninth+one_18, text=str(solution[i][j]), font=("Purisa",14,'bold'))
+
+    button_solve.destroy()
+    button_check.destroy()
+
     return
 
-def check_answer():
-    # TO DO
-    return
 
 
 def main():
