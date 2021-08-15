@@ -18,8 +18,11 @@ To exit the game entirely, click "EXIT".'
 
 When "PLAY" is clicked on the menu, the game board appears.
 Fill in the entry boxes with a number 1-9 so that:
+
 a) in each row, each numbner 1-9 appears only once. 
-b) in each column, each numbner 1-9 appears only once. 
+
+b) in each column, each numbner 1-9 appears only once.
+
 c) in each 3x3 grid, each number 1-9 appears only once.
 
 Click "CHECK" to find out if the player's inputs are correct. If the inputs are correct, the player has solved the puzzle. If not, the player can keep trying.
